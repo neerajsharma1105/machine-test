@@ -16,6 +16,8 @@ export const employeeSlice = createSlice({
       {
         name: "anu",
         email: "anu@gmail.com",
+        gender: "Female",
+        status: "Active"
       },
     ],
   },
@@ -34,6 +36,12 @@ export const employeeSlice = createSlice({
 
       state.list.push(action.payload);
     },
+    updateEmployee: (state, action) => {
+      const index = state.list.findIndex((val) => val.email === action.payload.email);
+      if (index !== -1) {
+        state.list[index] = action.payload;
+      }
+    },
     setEmail: (state, action) => {
       state.email = action.payload;
     },
@@ -43,7 +51,7 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { addEmployee, setLogin, removeEmployee, setOpen, setEmail } =
+export const { addEmployee, setLogin, removeEmployee, setOpen, setEmail,updateEmployee } =
   employeeSlice.actions;
 
 export default employeeSlice.reducer;
