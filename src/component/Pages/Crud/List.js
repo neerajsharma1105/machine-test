@@ -55,6 +55,7 @@ export default function List() {
             <TableRow>
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Hobby</TableCell>
               <TableCell align="left">Gender</TableCell>
               <TableCell align="left">Status</TableCell>
               <TableCell align="left">Edit</TableCell>
@@ -66,6 +67,7 @@ export default function List() {
               <TableRow key={row.email}>
                 <TableCell align="left">{row?.name}</TableCell>
                 <TableCell align="left">{row?.email}</TableCell>
+                <TableCell align="left">{row?.hobby}</TableCell>
                 <TableCell align="left">{row?.gender}</TableCell>
                 <TableCell align="left">{row?.status}</TableCell>
                 <TableCell align="left">
