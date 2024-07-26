@@ -19,6 +19,7 @@ import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
+  hobby: Yup.string().required('Hobby is required'),
   gender: Yup.string().required('Gender is required'),
   status: Yup.string().required('Status is required'),
   email: Yup.string().email('Invalid email format').required('Email is required'),
@@ -30,6 +31,7 @@ const Update = () => {
   const employee = useSelector((state) => state.employee);
   const [initialValues, setInitialValues] = useState({
     name: "",
+    hobby: "",
     gender: "",
     status: "",
     email: "",
@@ -79,6 +81,18 @@ const Update = () => {
               fullWidth
               error={touched.email && Boolean(errors.email)}
               helperText={touched.email && errors.email}
+            />
+            <TextField
+              label="Hobby"
+              name="hobby"
+              id="hobby"
+              size="small"
+              value={values.hobby}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+              error={touched.hobby && Boolean(errors.hobby)}
+              helperText={touched.hobby && errors.hobby}
             />
 
             <FormControl component="fieldset" margin="normal" error={touched.gender && Boolean(errors.gender)}>
