@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -9,13 +10,23 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../../store/employeeSlice";
+import { addEmployee, updateEmployee } from "../../../store/employeeSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import * as Yup from 'yup';
 
-const Update = ({ email }) => {
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  gender: Yup.string().required('Gender is required'),
+  status: Yup.string().required('Status is required'),
+  email: Yup.string().email('Invalid email format').required('Email is required'),
+});
+
+const Update = () => {
   const dispatch = useDispatch();
+  const { email } = useParams()
   const employee = useSelector((state) => state.employee);
   const [initialValues, setInitialValues] = useState({
     name: "",
@@ -23,26 +34,26 @@ const Update = ({ email }) => {
     status: "",
     email: "",
   });
-
+  const navigate = useNavigate();
   useEffect(() => {
-    const update = employee?.list?.find((val) => val.email === employee.email);
+    const update = employee?.list?.find((val) => val?.email === email);
     if (update) {
       setInitialValues(update);
     }
   }, [email, employee]);
-
-  console.log();
   return (
     <div>
       <Formik
         enableReinitialize
+        validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={(values, { setSubmitting }) => {
-          dispatch(addEmployee(values));
+          dispatch(updateEmployee(values));
+          navigate("/employee-list")
           setSubmitting(false);
         }}
       >
-        {({ values, handleChange, handleSubmit, isSubmitting }) => (
+        {({ values, handleChange, handleSubmit, isSubmitting, errors, touched }) => (
           <Form onSubmit={handleSubmit}>
             <TextField
               label="Name"
@@ -53,6 +64,8 @@ const Update = ({ email }) => {
               onChange={handleChange}
               margin="normal"
               fullWidth
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
             />
 
             <TextField
@@ -64,9 +77,11 @@ const Update = ({ email }) => {
               onChange={handleChange}
               margin="normal"
               fullWidth
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
             />
 
-            <FormControl component="fieldset" margin="normal">
+            <FormControl component="fieldset" margin="normal" error={touched.gender && Boolean(errors.gender)}>
               <FormLabel component="legend">Gender</FormLabel>
               <RadioGroup
                 aria-labelledby="gender"
@@ -86,9 +101,10 @@ const Update = ({ email }) => {
                   label="Male"
                 />
               </RadioGroup>
+              {touched.gender && errors.gender && <div style={{ color: 'red' }}>{errors.gender}</div>}
             </FormControl>
 
-            <FormControl margin="normal" fullWidth>
+            <FormControl margin="normal" fullWidth error={touched.status && Boolean(errors.status)}>
               <InputLabel id="status">Status</InputLabel>
               <Select
                 size="small"
@@ -102,12 +118,14 @@ const Update = ({ email }) => {
                 <MenuItem value="Active">Active</MenuItem>
                 <MenuItem value="InActive">InActive</MenuItem>
               </Select>
+              {touched.status && errors.status && <div style={{ color: 'red' }}>{errors.status}</div>}
+
             </FormControl>
 
             <div>
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting} variant="contained" color="primary">
                 Submit
-              </button>
+              </Button>
             </div>
           </Form>
         )}
