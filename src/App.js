@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Button } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import useAuth from "./component/config/useAuth";
+import Home from "./component/Pages/Home";
+import Login from "./component/Pages/Login";
+import List from "./component/Pages/Crud/List";
+import NavBar from "./component/Layout/Navbar";
+import { createContext, useState } from "react";
+import { Provider, useSelector } from "react-redux";
+
+import store from "./store/store";
+import Update from "./component/Pages/Crud/Update";
+
+export const EmployeeContext = createContext();
 
 function App() {
+  const EmployeeList = useAuth(List, ["user"]);
+  const EmployeeEdit = useAuth(Update, ["user"]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      {" "}
+      <div className="App">
+        {<NavBar />}
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path="/employee-list"
+              element={<EmployeeList role={"user"} />}
+            />
+            <Route path="/edit" element={<EmployeeEdit role={"user"} />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </Provider>
   );
 }
 
