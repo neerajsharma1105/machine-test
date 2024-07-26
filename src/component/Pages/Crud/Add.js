@@ -20,6 +20,7 @@ import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
+  hobby: Yup.string().required('Hobby is required'),
   gender: Yup.string().required('Gender is required'),
   status: Yup.string().required('Status is required'),
   email: Yup.string().email('Invalid email format').required('Email is required'),
@@ -33,7 +34,7 @@ const Add = () => {
       <Formik
         enableReinitialize
         validationSchema={validationSchema}
-        initialValues={{ name: "", email: "", gender: "", status: "" }}
+        initialValues={{ name: "", email: "", gender: "", status: "",hobby:"" }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           dispatch(addEmployee(values));
           setSubmitting(false);
@@ -76,6 +77,19 @@ const Add = () => {
                     margin="normal"
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && errors.email}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    label="Hobby"
+                    name="hobby"
+                    id="hobby"
+                    size="small"
+                    value={values.hobby}
+                    onChange={handleChange}
+                    margin="normal"
+                    error={touched.hobby && Boolean(errors.hobby)}
+                    helperText={touched.hobby && errors.hobby}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
