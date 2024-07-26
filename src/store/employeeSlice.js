@@ -10,12 +10,14 @@ export const employeeSlice = createSlice({
       {
         name: "neeraj",
         email: "n@gmail.com",
+        hobby:"chess",
         gender: "male",
         status: "Active",
       },
       {
         name: "anu",
         email: "anu@gmail.com",
+        hobby:"cricket",
         gender: "Female",
         status: "Active"
       },
