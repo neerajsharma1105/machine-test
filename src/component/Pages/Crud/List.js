@@ -72,7 +72,7 @@ export default function List() {
                   <CreateIcon
                     color="info"
                     onClick={() => {
-                      navigate("/edit");
+                      navigate(`/edit/${row?.email}`);
                     }}
                   />
                 </TableCell>
@@ -81,7 +81,6 @@ export default function List() {
                     onClick={() => {
                       dispatch(setEmail(row.email));
                       dispatch(setOpen(true));
-                      //   handleDelete(row.email);
                     }}
                     color="error"
                   />
