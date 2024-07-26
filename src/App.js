@@ -29,7 +29,7 @@ function App() {
             path="/employee-list"
             element={<EmployeeList role={"user"} />}
           />
-          <Route path="/edit" element={<EmployeeEdit role={"user"} />} />
+          <Route path="/edit/:email" element={<EmployeeEdit role={"user"} />} />
         </Routes>
       </BrowserRouter>
     </div>
