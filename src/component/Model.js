@@ -17,9 +17,9 @@ const style = {
   p: 4,
 };
 
-export default function Model({ email }) {
+export default function Model() {
   const dispatch = useDispatch();
-  const open = useSelector((state) => state.employee.open);
+  const open = useSelector((state) => state.employee);
   // const [open, setOpen] = React.useState(false);
   const handleOpen = () => dispatch(setOpen(true));
   const handleClose = () => dispatch(setOpen(false));
@@ -27,7 +27,7 @@ export default function Model({ email }) {
   return (
     <div>
       <Modal
-        open={open}
+        open={open.open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -44,7 +44,7 @@ export default function Model({ email }) {
           <Button
             varient="outlined"
             onClick={() => {
-              dispatch(removeEmployee(email));
+              dispatch(removeEmployee(open.email));
               dispatch(setOpen(false));
             }}
           >

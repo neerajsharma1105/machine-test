@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Login from "../Pages/Login";
 
 const useAuth = (Wrapper, allowedRoles) => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const employee = useSelector((state) => state.employee);
 
   return (props) => {
     const { role } = props;
 
-    if (true) {
+    if (employee.isLogin) {
       if (allowedRoles.includes(role)) {
         return (
           <>
@@ -15,7 +17,7 @@ const useAuth = (Wrapper, allowedRoles) => {
         );
       }
     } else {
-      return <div>useAuth</div>;
+      return <Login />;
     }
   };
 };

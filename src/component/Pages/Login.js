@@ -8,7 +8,7 @@ import { Box, Button, TextField } from "@mui/material";
 
 const validate = yup.object().shape({
   username: yup.string().required("Please Enter Eamil"),
-  password: yup.string().required("Enter Name"),
+  password: yup.string().required("Enter password"),
 });
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Login = () => {
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={validate}
-        onSubmit={(values) => {
+        onSubmit={(values, { setErrors }) => {
           console.log({ values });
           if (
             values.username === "admin@gmail.com/admin" &&
@@ -27,6 +27,7 @@ const Login = () => {
             dispatch(setLogin(true));
             navigate("/employee-list");
           } else {
+            setErrors({ username: "Not valid", password: "" });
             navigate("/");
           }
         }}

@@ -4,6 +4,7 @@ export const employeeSlice = createSlice({
   name: "employee",
   initialState: {
     open: false,
+    email: "",
     isLogin: false,
     list: [
       {
@@ -33,13 +34,16 @@ export const employeeSlice = createSlice({
 
       state.list.push(action.payload);
     },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
     setOpen: (state, action) => {
       state.open = action.payload;
     },
   },
 });
 
-export const { addEmployee, setLogin, removeEmployee, setOpen } =
+export const { addEmployee, setLogin, removeEmployee, setOpen, setEmail } =
   employeeSlice.actions;
 
 export default employeeSlice.reducer;

@@ -16,102 +16,101 @@ import { addEmployee } from "../../../store/employeeSlice";
 
 const Update = ({ email }) => {
   const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const employee = useSelector((state) => state.employee);
+  const [initialValues, setInitialValues] = useState({
     name: "",
     gender: "",
     status: "",
     email: "",
   });
 
-  const employee = useSelector((state) => state.employee);
-
   useEffect(() => {
-    const update = employee?.list?.filter((val) => val.email === email);
-    console.log({ update });
-    setData(...update);
-  }, [email]);
+    const update = employee?.list?.find((val) => val.email === employee.email);
+    if (update) {
+      setInitialValues(update);
+    }
+  }, [email, employee]);
 
+  console.log();
   return (
     <div>
-      {" "}
       <Formik
-        initialValues={data}
-        onSubmit={(values) => {
+        enableReinitialize
+        initialValues={initialValues}
+        onSubmit={(values, { setSubmitting }) => {
           dispatch(addEmployee(values));
-          //   setData({});
+          setSubmitting(false);
         }}
       >
-        {({ isSubmitting, setFieldValue }) => {
-          return (
-            <Form>
-              <TextField
-                label="Name"
-                name="name"
-                id="name"
-                value={data?.name}
-                size="small"
-                onChange={(e) => {
-                  setFieldValue("name", e.target.value);
-                }}
-              />
+        {({ values, handleChange, handleSubmit, isSubmitting }) => (
+          <Form onSubmit={handleSubmit}>
+            <TextField
+              label="Name"
+              name="name"
+              id="name"
+              value={values.name}
+              size="small"
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
 
-              <TextField
-                label="Email"
-                name="email"
-                id="email"
-                size="small"
-                value={data?.email}
-                onChange={(e) => {
-                  setFieldValue("email", e.target.value);
-                }}
-              />
+            <TextField
+              label="Email"
+              name="email"
+              id="email"
+              size="small"
+              value={values.email}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
 
-              <FormLabel id="gender">Gender</FormLabel>
+            <FormControl component="fieldset" margin="normal">
+              <FormLabel component="legend">Gender</FormLabel>
               <RadioGroup
                 aria-labelledby="gender"
                 name="gender"
-                label="Gender"
-                onChange={(e) => {
-                  setFieldValue("gender", e.target.value);
-                }}
+                value={values.gender}
+                onChange={handleChange}
+                row
               >
                 <FormControlLabel
-                  value={data?.gender === "female" ? true : false}
+                  value="female"
                   control={<Radio />}
                   label="Female"
                 />
                 <FormControlLabel
-                  value={data.gender === "male" ? true : false}
+                  value="male"
                   control={<Radio />}
                   label="Male"
                 />
               </RadioGroup>
+            </FormControl>
 
-              <FormControl sx={{ width: 300 }}>
-                <InputLabel id="status">Status</InputLabel>
-                <Select
-                  size="small"
-                  labelId="status"
-                  id="status"
-                  name="status"
-                  value={data?.status}
-                  label="Status"
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                    setFieldValue("status", e.target.value);
-                  }}
-                >
-                  <MenuItem value={"Active"}>Active</MenuItem>
-                  <MenuItem value={"InActive"}>InActive</MenuItem>
-                </Select>
-              </FormControl>
+            <FormControl margin="normal" fullWidth>
+              <InputLabel id="status">Status</InputLabel>
+              <Select
+                size="small"
+                labelId="status"
+                id="status"
+                name="status"
+                value={values.status}
+                label="Status"
+                onChange={handleChange}
+              >
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="InActive">InActive</MenuItem>
+              </Select>
+            </FormControl>
 
-              <div>
-                <button type="submit">submit</button>
-              </div>
-            </Form>
-          );
-        }}
+            <div>
+              <button type="submit" disabled={isSubmitting}>
+                Submit
+              </button>
+            </div>
+          </Form>
+        )}
       </Formik>
     </div>
   );

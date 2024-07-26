@@ -12,7 +12,11 @@ import { Edit } from "@mui/icons-material";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { removeEmployee, setOpen } from "../../../store/employeeSlice";
+import {
+  removeEmployee,
+  setEmail,
+  setOpen,
+} from "../../../store/employeeSlice";
 import Model from "../../Model";
 import Add from "./Add";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +24,6 @@ import { useNavigate } from "react-router-dom";
 export default function List() {
   const dispatch = useDispatch();
   const employee = useSelector((state) => state.employee);
-  const [email, setEmail] = React.useState("");
   const navigate = useNavigate();
   const [model, setModel] = React.useState(false);
 
@@ -35,14 +38,17 @@ export default function List() {
         padding: 4,
       }}
     >
-      <Button
-        onClick={() => {
-          setModel(true);
-        }}
-      >
-        Add Employee
-      </Button>
-      {model && <Add email={email} />}
+      {!model && (
+        <Button
+          variant="contained"
+          onClick={() => {
+            setModel(true);
+          }}
+        >
+          Add Employee
+        </Button>
+      )}
+      {model && <Add />}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "gray", color: "#ffffff" }}>
@@ -73,7 +79,7 @@ export default function List() {
                 <TableCell align="left">
                   <DeleteIcon
                     onClick={() => {
-                      setEmail(row.email);
+                      dispatch(setEmail(row.email));
                       dispatch(setOpen(true));
                       //   handleDelete(row.email);
                     }}
@@ -85,7 +91,7 @@ export default function List() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Model email={email} />
+      <Model />
     </Box>
   );
 }
