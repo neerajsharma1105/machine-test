@@ -42,7 +42,8 @@ export default function Model() {
             Are you sure, you want to delete this employee ?
           </Typography>
           <Button
-            varient="outlined"
+            color="primary"
+            variant="contained"
             onClick={() => {
               dispatch(removeEmployee(open.email));
               dispatch(setOpen(false));
